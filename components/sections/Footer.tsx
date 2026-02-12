@@ -32,6 +32,14 @@ export default function Footer() {
           >
             Letta ❤️
           </a>
+          <a
+            href="https://github.com/nouamanecodes/lettactl_docs"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.link}
+          >
+            Source
+          </a>
         </div>
       </div>
     </footer>
