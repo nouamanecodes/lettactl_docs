@@ -1,0 +1,12 @@
+.overview {
+  margin-bottom: var(--ds-space-8);
+  border-radius: var(--ds-radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--ds-color-border);
+}
+
+.overview img {
+  display: block;
+  width: 100%;
+  height: auto;
+}

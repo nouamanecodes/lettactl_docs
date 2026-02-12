@@ -1,0 +1,344 @@
+@import "tailwindcss";
+
+/* ===============================================
+   LETTACTL DOCS DESIGN SYSTEM
+   Letta-branded, forked from AdSpectre patterns
+   =============================================== */
+
+@theme {
+  --font-manrope: "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", ui-monospace, monospace;
+}
+
+:root {
+  /* Core Color Palette - Letta Branding */
+  --ds-color-background: #FFFFFF;
+  --ds-color-surface: #f8f9fb;
+  --ds-color-surface-elevated: #FFFFFF;
+  --ds-color-text-primary: #222222;
+  --ds-color-text-secondary: #666666;
+  --ds-color-text-muted: #999999;
+  --ds-color-text-inverse: #FFFFFF;
+  --ds-color-border: #dee1e4;
+  --ds-color-border-strong: #b4b8bc;
+  --ds-color-accent: #6C63FF;
+  --ds-color-accent-hover: #5A52D9;
+  --ds-color-accent-muted: #EEEDFF;
+  --ds-color-surface-hover: #f0f2f5;
+
+  /* Functional Colors */
+  --ds-color-success: #059669;
+  --ds-color-success-bg: #D1FAE5;
+  --ds-color-warning: #D97706;
+  --ds-color-warning-bg: #FED7AA;
+  --ds-color-error: #DC2626;
+  --ds-color-error-bg: #FEE2E2;
+  --ds-color-info: #0891B2;
+  --ds-color-info-bg: #CFFAFE;
+
+  /* Code Block Colors */
+  --ds-color-code-bg: #1e1e2e;
+  --ds-color-code-text: #cdd6f4;
+  --ds-color-code-border: #313244;
+
+  /* Typography */
+  --ds-font-family: var(--font-manrope);
+  --ds-font-mono: var(--font-mono);
+  --ds-font-weight-regular: 400;
+  --ds-font-weight-medium: 500;
+  --ds-font-weight-semibold: 600;
+  --ds-font-weight-bold: 700;
+
+  /* Type Scale */
+  --ds-text-xs: 0.75rem;
+  --ds-text-sm: 0.875rem;
+  --ds-text-base: 1rem;
+  --ds-text-lg: 1.125rem;
+  --ds-text-xl: 1.25rem;
+  --ds-text-2xl: 1.5rem;
+  --ds-text-3xl: 1.875rem;
+  --ds-text-4xl: 2rem;
+  --ds-text-5xl: 2.5rem;
+
+  /* Line Heights */
+  --ds-leading-tight: 1.2;
+  --ds-leading-snug: 1.3;
+  --ds-leading-normal: 1.5;
+  --ds-leading-relaxed: 1.6;
+  --ds-leading-loose: 1.8;
+
+  /* Spacing Scale - 4px base */
+  --ds-space-0: 0;
+  --ds-space-px: 1px;
+  --ds-space-0-5: 0.125rem;
+  --ds-space-1: 0.25rem;
+  --ds-space-2: 0.5rem;
+  --ds-space-3: 0.75rem;
+  --ds-space-4: 1rem;
+  --ds-space-5: 1.25rem;
+  --ds-space-6: 1.5rem;
+  --ds-space-8: 2rem;
+  --ds-space-10: 2.5rem;
+  --ds-space-12: 3rem;
+  --ds-space-16: 4rem;
+  --ds-space-20: 5rem;
+  --ds-space-24: 6rem;
+
+  /* Border Radius */
+  --ds-radius-none: 0;
+  --ds-radius-sm: 0.125rem;
+  --ds-radius-base: 0.25rem;
+  --ds-radius-md: 0.375rem;
+  --ds-radius-lg: 0.5rem;
+  --ds-radius-xl: 0.75rem;
+  --ds-radius-2xl: 1rem;
+  --ds-radius-full: 9999px;
+
+  /* Shadows */
+  --ds-shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --ds-shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --ds-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --ds-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+
+  /* Transitions */
+  --ds-transition-fast: 150ms ease;
+  --ds-transition-base: 200ms ease;
+  --ds-transition-slow: 300ms ease;
+
+  /* Layout */
+  --ds-header-height: 64px;
+  --ds-container-max: 1280px;
+  --ds-sidebar-width: 280px;
+  --ds-toc-width: 220px;
+  --ds-docs-max-width: 800px;
+
+  /* Z-index Scale */
+  --ds-z-base: 0;
+  --ds-z-dropdown: 100;
+  --ds-z-sticky: 200;
+  --ds-z-overlay: 300;
+  --ds-z-modal: 400;
+  --ds-z-toast: 500;
+}
+
+/* ===============================================
+   DARK MODE
+   =============================================== */
+
+.dark {
+  color-scheme: dark;
+
+  --ds-color-background: #0A0A0A;
+  --ds-color-surface: #141414;
+  --ds-color-surface-elevated: #1A1A1A;
+  --ds-color-surface-hover: #222222;
+  --ds-color-text-primary: #EEEEEE;
+  --ds-color-text-secondary: #A0A0A0;
+  --ds-color-text-muted: #666666;
+  --ds-color-text-inverse: #0A0A0A;
+  --ds-color-border: #2A2A2A;
+  --ds-color-border-strong: #444444;
+  --ds-color-accent: #8B83FF;
+  --ds-color-accent-hover: #9D96FF;
+  --ds-color-accent-muted: #1a1833;
+
+  --ds-color-code-bg: #111111;
+  --ds-color-code-text: #cdd6f4;
+  --ds-color-code-border: #2A2A2A;
+
+  --ds-shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+  --ds-shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.4);
+  --ds-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4);
+  --ds-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4);
+}
+
+/* ===============================================
+   BASE STYLES
+   =============================================== */
+
+* {
+  border-color: var(--ds-color-border);
+}
+
+body {
+  font-family: var(--ds-font-family);
+  background-color: var(--ds-color-background);
+  color: var(--ds-color-text-primary);
+  line-height: var(--ds-leading-normal);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: var(--ds-font-weight-medium);
+  letter-spacing: -0.02em;
+  font-family: var(--ds-font-family);
+}
+
+h1 {
+  font-size: var(--ds-text-4xl);
+  line-height: var(--ds-leading-tight);
+}
+
+h2 {
+  font-size: var(--ds-text-2xl);
+  line-height: var(--ds-leading-snug);
+}
+
+h3 {
+  font-size: var(--ds-text-lg);
+  line-height: var(--ds-leading-normal);
+}
+
+p {
+  font-size: var(--ds-text-base);
+  font-weight: var(--ds-font-weight-regular);
+  line-height: var(--ds-leading-relaxed);
+  color: var(--ds-color-text-primary);
+  max-width: 65ch;
+}
+
+code {
+  font-family: var(--ds-font-mono);
+  font-size: 0.875em;
+}
+
+/* ===============================================
+   COMPONENT CLASSES
+   =============================================== */
+
+.button-primary {
+  padding: var(--ds-space-2) var(--ds-space-5);
+  background: var(--ds-color-accent);
+  color: var(--ds-color-text-inverse);
+  border: 1px solid var(--ds-color-accent);
+  border-radius: var(--ds-radius-base);
+  font-size: var(--ds-text-sm);
+  font-weight: var(--ds-font-weight-medium);
+  font-family: var(--ds-font-family);
+  cursor: pointer;
+  transition: all var(--ds-transition-base);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-space-2);
+}
+
+.button-primary:hover {
+  background: var(--ds-color-accent-hover);
+  border-color: var(--ds-color-accent-hover);
+}
+
+.button-secondary {
+  padding: var(--ds-space-2) var(--ds-space-5);
+  background: var(--ds-color-background);
+  color: var(--ds-color-text-primary);
+  border: 1px solid var(--ds-color-border);
+  border-radius: var(--ds-radius-base);
+  font-size: var(--ds-text-sm);
+  font-weight: var(--ds-font-weight-medium);
+  font-family: var(--ds-font-family);
+  cursor: pointer;
+  transition: all var(--ds-transition-base);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-space-2);
+}
+
+.button-secondary:hover {
+  background: var(--ds-color-surface);
+}
+
+.button-ghost {
+  padding: var(--ds-space-2) var(--ds-space-5);
+  background: transparent;
+  color: var(--ds-color-text-secondary);
+  border: none;
+  border-radius: var(--ds-radius-base);
+  font-size: var(--ds-text-sm);
+  font-weight: var(--ds-font-weight-medium);
+  font-family: var(--ds-font-family);
+  cursor: pointer;
+  transition: all var(--ds-transition-base);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-space-2);
+}
+
+.button-ghost:hover {
+  color: var(--ds-color-text-primary);
+}
+
+/* Card */
+.card {
+  background: var(--ds-color-background);
+  border: 1px solid var(--ds-color-border);
+  border-radius: var(--ds-radius-lg);
+  overflow: hidden;
+  transition: all var(--ds-transition-base);
+}
+
+.card:hover {
+  border-color: var(--ds-color-accent);
+  background: var(--ds-color-accent-muted);
+}
+
+/* Layout */
+.container {
+  max-width: var(--ds-container-max);
+  margin: 0 auto;
+  padding: var(--ds-space-8);
+}
+
+/* Hero & Brand */
+.hero-headline {
+  font-size: var(--ds-text-5xl);
+  font-weight: var(--ds-font-weight-bold);
+  line-height: var(--ds-leading-tight);
+  letter-spacing: -0.02em;
+  color: var(--ds-color-text-primary);
+}
+
+.value-prop {
+  font-size: var(--ds-text-lg);
+  font-weight: var(--ds-font-weight-regular);
+  line-height: var(--ds-leading-relaxed);
+  color: var(--ds-color-text-secondary);
+  max-width: 50ch;
+}
+
+.section-heading {
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 3rem;
+  color: var(--ds-color-text-primary);
+}
+
+/* ===============================================
+   UTILITIES
+   =============================================== */
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (max-width: 640px) {
+  .hero-headline {
+    font-size: var(--ds-text-3xl);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+.button-primary:focus,
+.button-secondary:focus,
+.button-ghost:focus {
+  outline: 2px solid var(--ds-color-accent);
+  outline-offset: 2px;
+}

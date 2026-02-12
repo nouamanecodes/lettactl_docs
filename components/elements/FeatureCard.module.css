@@ -1,0 +1,38 @@
+.card {
+  display: block;
+  text-decoration: none;
+  background: var(--ds-color-background);
+  border: 1px solid var(--ds-color-border);
+  border-radius: var(--ds-radius-base);
+  padding: var(--ds-space-5);
+  transition: all var(--ds-transition-base);
+}
+
+.card:hover {
+  border-color: var(--ds-color-accent);
+  background: var(--ds-color-accent-muted);
+}
+
+.card:hover .icon {
+  color: var(--ds-color-accent);
+}
+
+.icon {
+  color: var(--ds-color-accent);
+  transition: color var(--ds-transition-base);
+  margin-bottom: var(--ds-space-3);
+}
+
+.title {
+  font-family: var(--ds-font-family);
+  font-size: var(--ds-text-sm);
+  font-weight: var(--ds-font-weight-semibold);
+  color: var(--ds-color-text-primary);
+  margin-bottom: var(--ds-space-1);
+}
+
+.description {
+  font-size: var(--ds-text-sm);
+  color: var(--ds-color-text-muted);
+  line-height: var(--ds-leading-relaxed);
+}

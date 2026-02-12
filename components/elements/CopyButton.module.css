@@ -1,0 +1,18 @@
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: var(--ds-color-code-text);
+  cursor: pointer;
+  padding: var(--ds-space-2);
+  border-radius: var(--ds-radius-base);
+  transition: all var(--ds-transition-fast);
+  opacity: 0.5;
+}
+
+.button:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.1);
+}

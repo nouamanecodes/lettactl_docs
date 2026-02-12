@@ -1,0 +1,96 @@
+.hero {
+  max-width: var(--ds-container-max);
+  margin: 0 auto;
+  padding: var(--ds-space-24) var(--ds-space-6) var(--ds-space-16);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-space-2);
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-xs);
+  color: var(--ds-color-accent);
+  background: var(--ds-color-accent-muted);
+  padding: var(--ds-space-1) var(--ds-space-3);
+  border-radius: var(--ds-radius-full);
+  margin-bottom: var(--ds-space-6);
+}
+
+.headline {
+  font-size: var(--ds-text-5xl);
+  font-weight: var(--ds-font-weight-bold);
+  line-height: var(--ds-leading-tight);
+  letter-spacing: -0.03em;
+  color: var(--ds-color-text-primary);
+  max-width: 18ch;
+  margin-bottom: var(--ds-space-4);
+}
+
+.accent {
+  color: var(--ds-color-accent);
+}
+
+.subtitle {
+  font-size: var(--ds-text-lg);
+  color: var(--ds-color-text-secondary);
+  line-height: var(--ds-leading-relaxed);
+  max-width: 50ch;
+  margin-bottom: var(--ds-space-8);
+}
+
+.install {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-space-3);
+  background: var(--ds-color-code-bg);
+  padding: var(--ds-space-3) var(--ds-space-5);
+  border-radius: var(--ds-radius-lg);
+  border: 1px solid var(--ds-color-code-border);
+  margin-bottom: var(--ds-space-6);
+}
+
+.installText {
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-sm);
+  color: var(--ds-color-code-text);
+  user-select: all;
+}
+
+.prompt {
+  color: var(--ds-color-accent);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-4);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.communityLink {
+  margin-top: var(--ds-space-4);
+  font-size: var(--ds-text-sm);
+  color: var(--ds-color-text-secondary);
+  text-decoration: none;
+  transition: color var(--ds-transition-fast);
+}
+
+.communityLink:hover {
+  color: var(--ds-color-accent);
+}
+
+@media (max-width: 640px) {
+  .headline {
+    font-size: var(--ds-text-3xl);
+  }
+
+  .hero {
+    padding-top: var(--ds-space-16);
+  }
+}

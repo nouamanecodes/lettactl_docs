@@ -1,0 +1,50 @@
+.title {
+  font-size: var(--ds-text-4xl);
+  font-weight: var(--ds-font-weight-bold);
+  margin-bottom: var(--ds-space-3);
+}
+
+.intro {
+  font-size: var(--ds-text-lg);
+  color: var(--ds-color-text-secondary);
+  margin-bottom: var(--ds-space-8);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: var(--ds-space-4);
+}
+
+@media (min-width: 640px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.card {
+  display: block;
+  padding: var(--ds-space-5);
+  border: 1px solid var(--ds-color-border);
+  border-radius: var(--ds-radius-lg);
+  text-decoration: none;
+  transition: all var(--ds-transition-base);
+}
+
+.card:hover {
+  border-color: var(--ds-color-accent);
+  background: var(--ds-color-accent-muted);
+}
+
+.cardTitle {
+  font-size: var(--ds-text-base);
+  font-weight: var(--ds-font-weight-semibold);
+  color: var(--ds-color-text-primary);
+  margin-bottom: var(--ds-space-1);
+}
+
+.cardDesc {
+  font-size: var(--ds-text-sm);
+  color: var(--ds-color-text-secondary);
+  line-height: var(--ds-leading-relaxed);
+}

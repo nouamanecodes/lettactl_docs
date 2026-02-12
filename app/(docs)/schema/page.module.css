@@ -1,0 +1,96 @@
+.title {
+  font-size: var(--ds-text-4xl);
+  font-weight: var(--ds-font-weight-bold);
+  margin-bottom: var(--ds-space-3);
+}
+
+.intro {
+  font-size: var(--ds-text-lg);
+  color: var(--ds-color-text-secondary);
+  margin-bottom: var(--ds-space-8);
+}
+
+.sectionTitle {
+  font-size: var(--ds-text-2xl);
+  font-weight: var(--ds-font-weight-semibold);
+  margin-top: var(--ds-space-10);
+  margin-bottom: var(--ds-space-4);
+}
+
+.subsectionTitle {
+  font-size: var(--ds-text-xl);
+  font-weight: var(--ds-font-weight-semibold);
+  margin-top: var(--ds-space-8);
+  margin-bottom: var(--ds-space-3);
+}
+
+.paragraph {
+  font-size: var(--ds-text-base);
+  color: var(--ds-color-text-secondary);
+  line-height: var(--ds-leading-relaxed);
+  margin-bottom: var(--ds-space-4);
+}
+
+.inlineCode {
+  font-family: var(--ds-font-mono);
+  font-size: 0.875em;
+  background: var(--ds-color-surface);
+  padding: var(--ds-space-0-5) var(--ds-space-2);
+  border-radius: var(--ds-radius-base);
+  border: 1px solid var(--ds-color-border);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: var(--ds-space-6);
+  font-size: var(--ds-text-sm);
+}
+
+.table th {
+  text-align: left;
+  padding: var(--ds-space-2) var(--ds-space-3);
+  border-bottom: 2px solid var(--ds-color-border);
+  color: var(--ds-color-text-secondary);
+  font-weight: var(--ds-font-weight-semibold);
+}
+
+.table td {
+  padding: var(--ds-space-2) var(--ds-space-3);
+  border-bottom: 1px solid var(--ds-color-border);
+  vertical-align: top;
+}
+
+.required {
+  color: var(--ds-color-accent);
+  font-size: var(--ds-text-xs);
+  font-weight: var(--ds-font-weight-semibold);
+}
+
+.optional {
+  color: var(--ds-color-text-tertiary);
+  font-size: var(--ds-text-xs);
+}
+
+.type {
+  font-family: var(--ds-font-mono);
+  font-size: 0.85em;
+  color: var(--ds-color-text-secondary);
+}
+
+.note {
+  font-size: var(--ds-text-sm);
+  color: var(--ds-color-text-secondary);
+  background: var(--ds-color-surface);
+  border: 1px solid var(--ds-color-border);
+  border-radius: var(--ds-radius-base);
+  padding: var(--ds-space-3) var(--ds-space-4);
+  margin-bottom: var(--ds-space-4);
+  line-height: var(--ds-leading-relaxed);
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid var(--ds-color-border);
+  margin: var(--ds-space-10) 0;
+}
