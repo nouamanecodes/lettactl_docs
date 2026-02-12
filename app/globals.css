@@ -36,6 +36,11 @@
   --ds-color-info: #0891B2;
   --ds-color-info-bg: #CFFAFE;
 
+  /* Brand Colors */
+  --ds-color-star: #d4a017;
+  --ds-color-npm: #cb3837;
+  --ds-color-code-overlay: rgba(255, 255, 255, 0.1);
+
   /* Code Block Colors */
   --ds-color-code-bg: #1e1e2e;
   --ds-color-code-text: #cdd6f4;
@@ -59,6 +64,11 @@
   --ds-text-3xl: 1.875rem;
   --ds-text-4xl: 2rem;
   --ds-text-5xl: 2.5rem;
+
+  /* Letter Spacing */
+  --ds-tracking-tight: -0.02em;
+  --ds-tracking-tighter: -0.03em;
+  --ds-tracking-wide: 0.05em;
 
   /* Line Heights */
   --ds-leading-tight: 1.2;
@@ -169,7 +179,7 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   font-weight: var(--ds-font-weight-medium);
-  letter-spacing: -0.02em;
+  letter-spacing: var(--ds-tracking-tight);
   font-family: var(--ds-font-family);
 }
 
@@ -295,7 +305,7 @@ code {
   font-size: var(--ds-text-5xl);
   font-weight: var(--ds-font-weight-bold);
   line-height: var(--ds-leading-tight);
-  letter-spacing: -0.02em;
+  letter-spacing: var(--ds-tracking-tight);
   color: var(--ds-color-text-primary);
 }
 
@@ -308,10 +318,10 @@ code {
 }
 
 .section-heading {
-  font-size: 2.5rem;
-  font-weight: 700;
-  line-height: 1.2;
-  margin-bottom: 3rem;
+  font-size: var(--ds-text-5xl);
+  font-weight: var(--ds-font-weight-bold);
+  line-height: var(--ds-leading-tight);
+  margin-bottom: var(--ds-space-12);
   color: var(--ds-color-text-primary);
 }
 

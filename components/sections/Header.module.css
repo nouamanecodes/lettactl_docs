@@ -39,8 +39,8 @@
 .logoText {
   font-family: var(--ds-font-family);
   font-weight: var(--ds-font-weight-semibold);
-  font-size: 1.25rem;
-  letter-spacing: -0.02em;
+  font-size: var(--ds-text-xl);
+  letter-spacing: var(--ds-tracking-tight);
   color: var(--ds-color-text-primary);
 }
 
@@ -113,17 +113,17 @@
   gap: 2px;
   font-family: var(--ds-font-mono);
   font-size: var(--ds-text-xs);
-  color: #d4a017;
+  color: var(--ds-color-star);
 }
 
 .downloadCount {
   font-family: var(--ds-font-mono);
   font-size: var(--ds-text-xs);
-  color: #d4a017;
+  color: var(--ds-color-star);
 }
 
 .npmText {
-  color: #cb3837;
+  color: var(--ds-color-npm);
   font-weight: var(--ds-font-weight-semibold);
 }
 

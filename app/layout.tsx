@@ -89,9 +89,9 @@ export default function RootLayout({
         <DarkModeProvider>
           {children}
         </DarkModeProvider>
+        <Analytics />
         <SpeedInsights />
       </body>
-      <Analytics />
     </html>
   )
 }

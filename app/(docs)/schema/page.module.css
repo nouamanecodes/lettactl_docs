@@ -68,7 +68,7 @@
 }
 
 .optional {
-  color: var(--ds-color-text-tertiary);
+  color: var(--ds-color-text-muted);
   font-size: var(--ds-text-xs);
 }
 
