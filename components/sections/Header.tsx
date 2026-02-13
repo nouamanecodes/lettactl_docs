@@ -23,7 +23,6 @@ export default function Header() {
   const { isDark, toggle: toggleDarkMode } = useDarkMode()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [starCount, setStarCount] = useState<number | null>(null)
-  const [downloads, setDownloads] = useState<number | null>(null)
   const [isHidden, setIsHidden] = useState(false)
 
   useEffect(() => {
@@ -31,12 +30,6 @@ export default function Header() {
       .then((res) => res.json())
       .then((data) => {
         if (data.stargazers_count != null) setStarCount(data.stargazers_count)
-      })
-      .catch(() => {})
-    fetch("https://api.npmjs.org/downloads/point/last-week/lettactl")
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.downloads != null) setDownloads(data.downloads)
       })
       .catch(() => {})
   }, [])
@@ -91,19 +84,6 @@ export default function Header() {
           </nav>
 
           <div className={styles.actions}>
-            <a
-              href="https://www.npmjs.com/package/lettactl"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={styles.headerBadge}
-            >
-              <span className={styles.npmText}>npm</span>
-              {downloads !== null && (
-                <span className={styles.downloadCount}>
-                  {formatCount(downloads)}/wk
-                </span>
-              )}
-            </a>
             <a
               href="https://github.com/nouamanecodes/lettactl"
               target="_blank"
