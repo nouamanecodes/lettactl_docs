@@ -834,6 +834,327 @@ lettactl report memory --all --analyze --confirm -o json`,
       },
     ],
   },
+  "agent-calibration": {
+    slug: "agent-calibration",
+    title: "Agent Calibration",
+    description:
+      "Use first_message to prime agents with initial context on creation. When agents drift or need retraining, delete and redeploy them, or use bulk messaging to recalibrate your entire fleet in place.",
+    sections: [
+      {
+        heading: "What Calibration Does",
+        content:
+          "When you create an agent with a first_message, lettactl sends that message to the agent immediately after creation — before any user interacts with it. The agent processes the message, updates its memory, and is ready to go. Think of it as a boot sequence: the system prompt tells the agent who it is, and the first_message makes it act on that identity by reviewing its memory, confirming its role, or loading initial context into its working memory.",
+      },
+      {
+        heading: "Adding a first_message",
+        content:
+          "Add the first_message field to any agent in your YAML config. The message is sent asynchronously with a 60-second timeout. lettactl polls until the agent finishes processing, then moves on to the next agent.",
+        code: {
+          language: "yaml",
+          title: "Agent with calibration message",
+          code: `agents:
+  - name: support-agent
+    llm_config:
+      model: google_ai/gemini-2.5-pro
+      context_window: 32000
+    system_prompt:
+      value: |
+        You are a customer support agent for Acme Corp.
+        Use your memory blocks to track customer context.
+    memory_blocks:
+      - name: company_info
+        description: "Company products and policies"
+        limit: 5000
+        agent_owned: true
+        from_file: knowledge/company-info.md
+    first_message: |
+      Review your memory blocks and confirm you understand your role.
+      Summarize what you know about the company and what tools you have.`,
+        },
+      },
+      {
+        heading: "When first_message Runs",
+        content:
+          "The first_message is only sent on initial agent creation — never on updates. If you run lettactl apply twice with the same config, the second run sees the agent already exists, updates it in place, and skips the first_message. This is intentional: updates preserve conversation history and learned memory, so re-sending the calibration message would pollute the agent's context.",
+      },
+      {
+        heading: "Writing Good Calibration Messages",
+        content:
+          "A good first_message asks the agent to do something with its configuration. Don't just say \"hello\" — make it review its memory, confirm its role, or test a tool. This forces the agent to internalize its setup before real users arrive. Keep it specific: tell the agent exactly what to check and what to summarize.",
+        code: {
+          language: "yaml",
+          title: "Calibration message examples",
+          code: `# Good: forces the agent to internalize its config
+first_message: |
+  Review your memory blocks and system prompt.
+  Summarize your role, the tools available to you,
+  and the company info in your memory. Be concise.
+
+# Good: tests tool usage during calibration
+first_message: |
+  Test your lookup_order tool with order ID "TEST-001".
+  Confirm the tool works and report what you get back.
+
+# Bad: no action, agent learns nothing
+first_message: "Hello, are you ready?"
+
+# Bad: too vague
+first_message: "Initialize yourself."`,
+        },
+      },
+      {
+        heading: "Skipping Calibration",
+        content:
+          "Use --skip-first-message when you want fast deploys without waiting for calibration. Canary deploys skip it automatically — canaries are for testing config, not calibration. The export command also supports --skip-first-message to omit it from exported YAML.",
+        code: {
+          language: "bash",
+          title: "Skipping first_message",
+          code: `# Skip calibration for fast deploy
+lettactl apply -f fleet.yaml --skip-first-message
+
+# Canary deploys auto-skip (testing, not calibration)
+lettactl apply -f fleet.yaml --canary
+
+# Promote to production (sends first_message if configured)
+lettactl apply -f fleet.yaml --canary --promote
+
+# Export without first_message
+lettactl export agent support-agent -f yaml --skip-first-message -o agents.yml`,
+        },
+      },
+      {
+        heading: "Retraining: Delete and Redeploy",
+        content:
+          "Since first_message only fires on creation, retraining means destroying the agent and creating it fresh. This is the nuclear option — the agent loses all conversation history and learned memory. Use it when the agent has drifted so far that patching memory isn't enough. Delete the agent, then apply the config again. The first_message runs on the fresh agent.",
+        code: {
+          language: "bash",
+          title: "Delete and redeploy for retraining",
+          code: `# Delete the agent
+lettactl delete agent support-agent
+
+# Redeploy — first_message fires on the new agent
+lettactl apply -f fleet.yaml
+
+# Or delete and redeploy in one step with destroy + apply
+lettactl delete agent support-agent && lettactl apply -f fleet.yaml`,
+        },
+      },
+      {
+        heading: "Retraining in Place with Bulk Messaging",
+        content:
+          "If you don't want to destroy the agent, you can recalibrate it by sending a message that tells it to re-read its memory and correct itself. This works for single agents or entire fleets. The agent keeps its conversation history but reorients around its current memory blocks. Use glob patterns or tags to target specific agents.",
+        code: {
+          language: "bash",
+          title: "Recalibrate agents in place",
+          code: `# Recalibrate a single agent
+lettactl send support-agent "Re-read all your memory blocks. Your company info and policies have been updated. Summarize what changed."
+
+# Recalibrate all support agents
+lettactl send --all "support-*" "Your memory blocks have been updated with new product information. Review your company_info block and confirm you see the changes." --confirm
+
+# Recalibrate by tag (all agents for a tenant)
+lettactl send --tags "tenant:acme" "Company policies have changed. Re-read your memory blocks and acknowledge the updates." --confirm
+
+# Recalibrate entire fleet
+lettactl send --all "*" "System update: review your memory blocks and tools. Confirm your role and current capabilities." --confirm`,
+        },
+      },
+      {
+        heading: "Recalibration via the SDK",
+        content:
+          "For programmatic retraining — like after updating shared memory blocks — use the SDK to send recalibration messages. Update the memory content first, apply the config, then send a bulk message telling agents to re-read their memory.",
+        code: {
+          language: "typescript",
+          title: "SDK recalibration after memory update",
+          code: `import { LettaCtl } from 'lettactl'
+
+const ctl = new LettaCtl({
+  lettaBaseUrl: 'http://localhost:8283',
+})
+
+async function recalibrateFleet(pattern: string, reason: string) {
+  // Step 1: Apply updated config (memory blocks, prompts, etc.)
+  await ctl.deployFleet(updatedConfig)
+
+  // Step 2: Send recalibration message to all matching agents
+  const results = await ctl.bulkSendMessage(
+    \`Your configuration has been updated: \${reason}. Re-read your memory blocks and confirm you understand the changes.\`,
+    { pattern, confirm: true, timeout: 60 }
+  )
+
+  // Step 3: Check results
+  const failed = results.filter(r => r.status !== 'completed')
+  if (failed.length > 0) {
+    console.error(\`\${failed.length} agents failed recalibration\`)
+  }
+}
+
+// After updating product info
+await recalibrateFleet('support-*', 'Product catalog updated with Q2 pricing')`,
+        },
+      },
+      {
+        heading: "When to Retrain vs Recalibrate",
+        content:
+          "Recalibrate in place (bulk message) when you've updated memory blocks, changed shared content, or want agents to re-read their context. This is fast and preserves conversation history. Delete and redeploy (retrain) when the agent's memory is corrupted, it's learned bad patterns from conversations, or you've fundamentally changed its role. Retraining is slower but gives you a clean slate.",
+      },
+    ],
+  },
+  "bulk-messaging": {
+    slug: "bulk-messaging",
+    title: "Bulk Messaging",
+    description:
+      "Send the same message to hundreds of agents at once using glob patterns, tags, or config files. Bulk messaging runs 5 agents concurrently with real-time status output — useful for fleet-wide recalibration, announcements, and multi-tenant operations.",
+    sections: [
+      {
+        heading: "How It Works",
+        content:
+          "lettactl send supports three bulk modes: --all with a glob pattern to match agent names, --tags to match by tag, and -f to target agents in a YAML config file. The message is sent asynchronously to each agent with up to 5 running concurrently. Each agent processes the message independently. You get per-agent status output as they complete and a summary at the end.",
+      },
+      {
+        heading: "Send by Glob Pattern",
+        content:
+          "Use --all with a minimatch glob pattern to target agents by name. The pattern is matched against all agents on the server. Use --confirm to skip the interactive confirmation prompt.",
+        code: {
+          language: "bash",
+          title: "Glob pattern messaging",
+          code: `# All agents matching a pattern
+lettactl send --all "support-*" "New FAQ entries have been added to your knowledge base." --confirm
+
+# All agents (wildcard)
+lettactl send --all "*" "System maintenance in 1 hour." --confirm
+
+# Complex patterns
+lettactl send --all "+(prod|staging)-*" "Deployment complete." --confirm`,
+        },
+      },
+      {
+        heading: "Send by Tags",
+        content:
+          "Use --tags to target agents by their tag values. This ties directly into the multi-tenancy pattern — you can message all agents for a specific tenant, role, or any tag combination. Tags use AND logic: --tags \"tenant:acme,role:support\" matches agents with both tags.",
+        code: {
+          language: "bash",
+          title: "Tag-based messaging",
+          code: `# All agents for a tenant
+lettactl send --tags "tenant:acme" "Your company policies have been updated." --confirm
+
+# All support agents across tenants
+lettactl send --tags "role:support" "New escalation procedure in effect." --confirm
+
+# Specific tenant + role combination
+lettactl send --tags "tenant:acme,role:support" "Acme support team: new ticket workflow." --confirm`,
+        },
+      },
+      {
+        heading: "Send from Config File",
+        content:
+          "Use -f to target agents defined in a YAML config file. Only agents that exist on the server and appear in the config will receive the message. This is useful for messaging the exact set of agents in a fleet config.",
+        code: {
+          language: "bash",
+          title: "Config file messaging",
+          code: `# Message all agents in a fleet config
+lettactl send -f fleet.yaml "Config has been updated. Review your memory." --confirm
+
+# Same fleet you deploy with
+lettactl apply -f fleet.yaml
+lettactl send -f fleet.yaml "Deployment complete. Confirm readiness." --confirm`,
+        },
+      },
+      {
+        heading: "Confirmation and Output",
+        content:
+          "Without --confirm, lettactl shows which agents will be messaged and asks for confirmation. With --confirm, it proceeds immediately. During execution, each agent's result is printed as it completes — OK with duration on success, FAIL with error on failure. A summary shows total completed vs failed at the end.",
+        code: {
+          language: "bash",
+          title: "Example output",
+          code: `$ lettactl send --all "support-*" "Recalibrate" --confirm
+
+OK support-agent-1 (3.2s)
+OK support-agent-2 (4.1s)
+FAIL support-agent-3: Run timed out after 60s
+OK support-agent-4 (2.8s)
+OK support-agent-5 (5.5s)
+
+Completed: 4/5, Failed: 1`,
+        },
+      },
+      {
+        heading: "Concurrency",
+        content:
+          "Bulk messaging sends to 5 agents concurrently. As each agent completes, the next one in the queue starts. Each agent is polled independently at 1-second intervals until the run completes, fails, or times out. For large fleets (hundreds of agents), the queue ensures steady throughput without overwhelming the Letta server.",
+      },
+      {
+        heading: "SDK Bulk Messaging",
+        content:
+          "The SDK exposes bulkSendMessage for programmatic bulk operations. You can target by glob pattern or pass a pre-resolved list of agents. Use collectResponse to capture each agent's reply. Use messageFn for per-agent message customization.",
+        code: {
+          language: "typescript",
+          title: "SDK bulk messaging",
+          code: `import { LettaCtl } from 'lettactl'
+
+const ctl = new LettaCtl({
+  lettaBaseUrl: 'http://localhost:8283',
+})
+
+// Send to all matching agents
+const results = await ctl.bulkSendMessage(
+  'Review your memory blocks and confirm readiness.',
+  {
+    pattern: 'support-*',
+    confirm: true,
+    timeout: 60,
+    collectResponse: true,
+  }
+)
+
+// Check results
+for (const r of results) {
+  console.log(\`\${r.agentName}: \${r.status} (\${r.duration}s)\`)
+  if (r.responseText) {
+    console.log(\`  Response: \${r.responseText.slice(0, 100)}\`)
+  }
+}`,
+        },
+      },
+      {
+        heading: "Per-Agent Customization",
+        content:
+          "In the SDK, use messageFn to send a different message to each agent based on its name, tags, or other properties. This is useful for tenant-specific recalibration where each agent needs a tailored message.",
+        code: {
+          language: "typescript",
+          title: "Custom per-agent messages",
+          code: `const results = await ctl.bulkSendMessage('', {
+  pattern: '*-support',
+  messageFn: (agent) => {
+    // Extract tenant from agent name
+    const tenant = agent.name.replace('-support', '')
+    return \`You are the support agent for \${tenant}. Review your memory blocks and confirm you have the latest \${tenant} product information.\`
+  },
+  confirm: true,
+  collectResponse: true,
+})`,
+        },
+      },
+      {
+        heading: "Multi-Tenancy Patterns",
+        content:
+          "Bulk messaging combined with tags is the backbone of multi-tenant operations. Update shared memory, then tell all agents to re-read it. Announce policy changes to a single tenant. Run fleet-wide health checks by asking agents to self-report. All of these are a single command.",
+        code: {
+          language: "bash",
+          title: "Multi-tenant messaging patterns",
+          code: `# Update shared block, then notify all agents
+lettactl apply -f fleet.yaml
+lettactl send --all "*" "Shared company policies have been updated. Re-read your company-policies block." --confirm
+
+# Tenant-specific announcement
+lettactl send --tags "tenant:acme" "Acme Corp has a new product line. Check your product_knowledge block." --confirm
+
+# Fleet-wide health check
+lettactl send --all "*" "Report your current status: what is your role, how many memory blocks do you have, and are any of them empty?" --confirm`,
+        },
+      },
+    ],
+  },
   "safe-tool-design": {
     slug: "safe-tool-design",
     title: "Safe Tool Design in a Web App",
