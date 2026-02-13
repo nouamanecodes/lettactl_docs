@@ -12,6 +12,7 @@ import styles from "./Header.module.css"
 const navLinks = [
   { title: "Docs", href: "/quickstart" },
   { title: "Commands", href: "/commands" },
+  { title: "Supabase", href: "/guides/cloud-storage" },
   { title: "Schema", href: "/schema" },
   { title: "SDK", href: "/sdk" },
   { title: "Guides", href: "/guides" },

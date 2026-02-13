@@ -10,6 +10,389 @@ export interface GuidePage {
 }
 
 export const guides: Record<string, GuidePage> = {
+  "cloud-storage": {
+    slug: "cloud-storage",
+    title: "Supabase Integration",
+    description:
+      "Source agent prompts, memory blocks, tools, and folder files from Supabase Storage buckets. lettactl downloads content at deploy time so your agent configs stay declarative while your content lives in the cloud.",
+    sections: [
+      {
+        heading: "Overview",
+        content:
+          "lettactl integrates with Supabase Storage as a cloud backend for agent configuration content. Instead of keeping prompt files, knowledge documents, and tool source code on the local filesystem, you can store them in Supabase buckets and reference them from your YAML with from_bucket. At deploy time, lettactl downloads the content and applies it to your agents. This is read-only — lettactl never writes to your buckets.",
+      },
+      {
+        heading: "Setup",
+        content:
+          "You need three environment variables. SUPABASE_URL is your project URL. For authentication, lettactl prefers SUPABASE_SERVICE_ROLE_KEY (required for private buckets) and falls back to SUPABASE_ANON_KEY for public buckets. The service role key bypasses row-level security, so use it when your buckets are private.",
+        code: {
+          language: "bash",
+          title: "Environment variables",
+          code: `# Required
+export SUPABASE_URL=https://your-project.supabase.co
+
+# For private buckets (recommended)
+export SUPABASE_SERVICE_ROLE_KEY=sb_secret_xxxxx
+
+# For public buckets only
+export SUPABASE_ANON_KEY=sb_publishable_xxxxx`,
+        },
+      },
+      {
+        heading: "The from_bucket Syntax",
+        content:
+          "Every place in your YAML that accepts from_file also accepts from_bucket. The structure is always the same: a provider (currently only supabase), a bucket name, and a file path. The path can include directories and, for folders, glob patterns.",
+        code: {
+          language: "yaml",
+          title: "from_bucket structure",
+          code: `from_bucket:
+  provider: supabase
+  bucket: my-bucket
+  path: prompts/system-prompt.md`,
+        },
+      },
+      {
+        heading: "System Prompts",
+        content:
+          "Store your system prompts in Supabase and reference them by path. lettactl downloads the file content at deploy time and sets it as the agent's system prompt. This is useful for managing prompts across environments — staging and production can point to different buckets or paths.",
+        code: {
+          language: "yaml",
+          title: "Cloud-sourced system prompt",
+          code: `agents:
+  - name: support-agent
+    llm_config:
+      model: google_ai/gemini-2.5-pro
+      context_window: 32000
+    system_prompt:
+      from_bucket:
+        provider: supabase
+        bucket: agent-configs
+        path: prompts/support-agent.md`,
+        },
+      },
+      {
+        heading: "Memory Blocks",
+        content:
+          "Seed agent memory blocks with content from Supabase. The file content becomes the initial value of the memory block. This works for both agent-owned blocks and shared blocks.",
+        code: {
+          language: "yaml",
+          title: "Cloud-sourced memory blocks",
+          code: `agents:
+  - name: sales-agent
+    memory_blocks:
+      - name: product_knowledge
+        description: "Product catalog and pricing"
+        limit: 8000
+        agent_owned: true
+        from_bucket:
+          provider: supabase
+          bucket: knowledge-base
+          path: products/catalog.md
+
+shared_blocks:
+  - name: company-policies
+    description: "Company-wide policies"
+    limit: 5000
+    from_bucket:
+      provider: supabase
+      bucket: shared-content
+      path: policies/main.md`,
+        },
+      },
+      {
+        heading: "Folders",
+        content:
+          "Download files from Supabase buckets into agent folders. This supports glob patterns — use *.pdf to download all PDFs, or * to download everything in a directory. You can mix local files and bucket files in the same folder. lettactl downloads each file to a temp directory, uploads it to the Letta agent folder, then cleans up.",
+        code: {
+          language: "yaml",
+          title: "Cloud-sourced folders with glob patterns",
+          code: `agents:
+  - name: research-agent
+    folders:
+      - name: company-docs
+        files:
+          # Glob: download all PDFs from the docs directory
+          - from_bucket:
+              provider: supabase
+              bucket: documents
+              path: 'docs/*.pdf'
+
+          # Single file from bucket
+          - from_bucket:
+              provider: supabase
+              bucket: documents
+              path: readme.md
+
+          # Mix with local files
+          - local-files/extra-notes.txt`,
+        },
+      },
+      {
+        heading: "Shared Folders",
+        content:
+          "Shared folders work the same way — define them once with bucket sources and reference them from multiple agents. The files are downloaded once and the folder is shared across all referencing agents.",
+        code: {
+          language: "yaml",
+          title: "Cloud-sourced shared folders",
+          code: `shared_folders:
+  - name: knowledge-base
+    files:
+      - from_bucket:
+          provider: supabase
+          bucket: shared-docs
+          path: '*.md'
+
+agents:
+  - name: agent-a
+    shared_folders: [knowledge-base]
+
+  - name: agent-b
+    shared_folders: [knowledge-base]`,
+        },
+      },
+      {
+        heading: "Tools",
+        content:
+          "Store custom tool source code in Supabase and load it at deploy time. The bucket file should contain the Python source code for the tool.",
+        code: {
+          language: "yaml",
+          title: "Cloud-sourced tools",
+          code: `agents:
+  - name: data-agent
+    tools:
+      - name: custom_lookup
+        from_bucket:
+          provider: supabase
+          bucket: tools
+          path: custom_lookup.py`,
+        },
+      },
+      {
+        heading: "Where from_bucket Is Supported",
+        content:
+          "The from_bucket syntax works in five places: system_prompt (single file, no glob), memory_blocks value (single file, no glob), shared_blocks value (single file, no glob), folders files (single file or glob patterns), shared_folders files (single file or glob patterns), and tools source code (single file, no glob). Glob patterns like *.txt and *.pdf are only supported in folder file entries.",
+      },
+      {
+        heading: "Complete Example",
+        content:
+          "Here's a full fleet config that sources everything from Supabase — system prompt, memory, folders, and tools. Local files and bucket files can be mixed freely.",
+        code: {
+          language: "yaml",
+          title: "Full cloud-native fleet config",
+          code: `shared_blocks:
+  - name: company-context
+    description: "Company info shared across all agents"
+    limit: 5000
+    from_bucket:
+      provider: supabase
+      bucket: shared-content
+      path: company-context.md
+
+shared_folders:
+  - name: product-docs
+    files:
+      - from_bucket:
+          provider: supabase
+          bucket: documents
+          path: 'products/*.md'
+
+agents:
+  - name: support-agent
+    description: "Customer support agent"
+    tags: ["role:support"]
+    llm_config:
+      model: google_ai/gemini-2.5-pro
+      context_window: 32000
+    system_prompt:
+      from_bucket:
+        provider: supabase
+        bucket: agent-configs
+        path: prompts/support.md
+    shared_blocks: [company-context]
+    shared_folders: [product-docs]
+    memory_blocks:
+      - name: faq_knowledge
+        description: "Common customer questions"
+        limit: 4000
+        agent_owned: true
+        from_bucket:
+          provider: supabase
+          bucket: knowledge-base
+          path: support/faq.md
+    tools:
+      - name: ticket_lookup
+        from_bucket:
+          provider: supabase
+          bucket: tools
+          path: ticket_lookup.py`,
+        },
+      },
+      {
+        heading: "Error Handling",
+        content:
+          "lettactl provides specific error messages for common Supabase issues. If a bucket doesn't exist or is private without the right key, you'll see a clear message explaining the possible causes. File-not-found errors include the exact bucket and path. Files smaller than 40 bytes trigger a warning (likely empty), and files over 50MB trigger a size warning.",
+      },
+      {
+        heading: "Bucket Organization Tips",
+        content:
+          "Organize your Supabase buckets by content type rather than by agent. A prompts/ bucket for all system prompts, a knowledge-base/ bucket for memory content, a tools/ bucket for Python source. This makes it easy to update content across agents — change a prompt file once and re-deploy. Use private buckets with the service role key for anything sensitive.",
+      },
+      {
+        heading: "Using the SDK",
+        content:
+          "When using the TypeScript SDK, pass Supabase credentials directly to the constructor instead of relying on environment variables. The SDK uses the same from_bucket resolution as the CLI — bucket content is downloaded and applied during deployFleet().",
+        code: {
+          language: "typescript",
+          title: "SDK setup with Supabase",
+          code: `import { LettaCtl } from 'lettactl'
+
+const ctl = new LettaCtl({
+  lettaBaseUrl: 'http://localhost:8283',
+  lettaApiKey: 'your_api_key',
+  supabaseUrl: 'https://your-project.supabase.co',
+  supabaseServiceRoleKey: 'sb_secret_xxxxx',
+})`,
+        },
+      },
+    ],
+  },
+  "frontend-uploads": {
+    slug: "frontend-uploads",
+    title: "Frontend Uploads",
+    description:
+      "Let users upload files from your frontend to a Supabase bucket, then have your agents pull from that same bucket. A shared bridge between your UI and your agent fleet.",
+    sections: [
+      {
+        heading: "How It Works",
+        content:
+          "The pattern is simple: your frontend uploads files to a Supabase Storage bucket, and your agent YAML references that same bucket with from_bucket. Users drop in PDFs, docs, or CSVs through your app — on the next deploy, the agent picks them all up automatically via glob patterns. For SaaS apps, organize uploads by user or tenant ID so each agent only sees its own files.",
+      },
+      {
+        heading: "Create the Bucket",
+        content:
+          "Create a storage bucket in your Supabase dashboard or via SQL. Use a private bucket if the content is sensitive — lettactl authenticates with your service role key. Organize by tenant or use case so glob patterns stay clean.",
+        code: {
+          language: "sql",
+          title: "Create a bucket via Supabase SQL editor",
+          code: `-- Create a private bucket for user uploads
+INSERT INTO storage.buckets (id, name, public)
+VALUES ('user-uploads', 'user-uploads', false);
+
+-- Allow authenticated users to upload to their own folder
+CREATE POLICY "Users upload to own folder"
+ON storage.objects FOR INSERT
+TO authenticated
+WITH CHECK (
+  bucket_id = 'user-uploads'
+  AND (storage.foldername(name))[1] = auth.uid()::text
+);
+
+-- Allow service role (lettactl) to read everything
+-- No policy needed — service role key bypasses RLS`,
+        },
+      },
+      {
+        heading: "Upload from Your Frontend",
+        content:
+          "Use the Supabase JS client in your frontend to upload files into the bucket. Organize uploads by user ID or tenant ID so you can scope agent folders to specific users. The upload path becomes the path you reference in from_bucket.",
+        code: {
+          language: "typescript",
+          title: "Frontend upload with Supabase JS",
+          code: `import { createClient } from '@supabase/supabase-js'
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+)
+
+async function uploadDocument(userId: string, file: File) {
+  const path = \`\${userId}/\${file.name}\`
+
+  const { error } = await supabase.storage
+    .from('user-uploads')
+    .upload(path, file, { upsert: true })
+
+  if (error) throw error
+
+  // File is now at: user-uploads/\${userId}/\${file.name}
+  // The agent can pull it with:
+  //   bucket: user-uploads
+  //   path: '\${userId}/*.pdf'
+}`,
+        },
+      },
+      {
+        heading: "Point the Agent at the Bucket",
+        content:
+          "Reference the same bucket in your agent YAML. Use a glob pattern to pull all files a user has uploaded. When you redeploy with lettactl apply, the agent's folder is synced with whatever is currently in the bucket.",
+        code: {
+          language: "yaml",
+          title: "Agent pulling from the upload bucket",
+          code: `agents:
+  - name: user-42-assistant
+    tags: ["user:42"]
+    llm_config:
+      model: google_ai/gemini-2.5-pro
+      context_window: 32000
+    system_prompt:
+      value: "You are a personal assistant. Use the documents in your knowledge folder to answer questions."
+    folders:
+      - name: user-knowledge
+        files:
+          # Pull everything user 42 uploaded
+          - from_bucket:
+              provider: supabase
+              bucket: user-uploads
+              path: '42/*'`,
+        },
+      },
+      {
+        heading: "Automate with the SDK",
+        content:
+          "For SaaS apps where users upload documents continuously, use the SDK to redeploy after each upload. This closes the loop: user uploads a file, your backend triggers a redeploy, the agent immediately has access to the new content.",
+        code: {
+          language: "typescript",
+          title: "Redeploy after upload",
+          code: `import { LettaCtl } from 'lettactl'
+
+const ctl = new LettaCtl({
+  lettaBaseUrl: process.env.LETTA_URL!,
+  supabaseUrl: process.env.SUPABASE_URL!,
+  supabaseServiceRoleKey: process.env.SUPABASE_SERVICE_ROLE_KEY!,
+})
+
+// Called after a successful upload
+async function syncAgentKnowledge(userId: string) {
+  const fleet = ctl.createFleetConfig()
+    .addAgent({
+      name: \`user-\${userId}-assistant\`,
+      tags: [\`user:\${userId}\`],
+      llm_config: {
+        model: 'google_ai/gemini-2.5-pro',
+        context_window: 32000,
+      },
+      system_prompt: {
+        value: 'You are a personal assistant with access to the user documents.',
+      },
+      folders: [{
+        name: 'user-knowledge',
+        files: [{
+          from_bucket: {
+            provider: 'supabase',
+            bucket: 'user-uploads',
+            path: \`\${userId}/*\`,
+          },
+        }],
+      }],
+    })
+    .build()
+
+  await ctl.deployFleet(fleet)
+}`,
+        },
+      },
+    ],
+  },
   "canary-deployments": {
     slug: "canary-deployments",
     title: "Canary Deployments",

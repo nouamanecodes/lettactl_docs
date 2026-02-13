@@ -24,6 +24,10 @@ export const navigation: NavItem[] = [
       { title: "Utility", href: "/commands/utility" },
     ],
   },
+  {
+    title: "Supabase Integration",
+    href: "/guides/cloud-storage",
+  },
   { title: "YAML Schema", href: "/schema" },
   { title: "SDK Reference", href: "/sdk" },
   {
@@ -35,6 +39,7 @@ export const navigation: NavItem[] = [
       { title: "Self-Diagnosis", href: "/guides/self-diagnosis" },
       { title: "Git Workflows", href: "/guides/git-workflows" },
       { title: "Cloud Storage", href: "/guides/cloud-storage" },
+      { title: "Frontend Uploads", href: "/guides/frontend-uploads" },
       { title: "MCP Servers", href: "/guides/mcp-servers" },
     ],
   },
