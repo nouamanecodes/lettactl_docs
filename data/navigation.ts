@@ -37,10 +37,10 @@ export const navigation: NavItem[] = [
       { title: "Canary Deployments", href: "/guides/canary-deployments" },
       { title: "Multi-Tenancy", href: "/guides/multi-tenancy" },
       { title: "Self-Diagnosis", href: "/guides/self-diagnosis" },
-      { title: "Git Workflows", href: "/guides/git-workflows" },
       { title: "Cloud Storage", href: "/guides/cloud-storage" },
       { title: "Frontend Uploads", href: "/guides/frontend-uploads" },
       { title: "MCP Servers", href: "/guides/mcp-servers" },
+      { title: "Safe Tool Design in a Web App", href: "/guides/safe-tool-design" },
     ],
   },
   {
