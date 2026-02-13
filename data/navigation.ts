@@ -10,6 +10,10 @@ export const navigation: NavItem[] = [
     href: "/quickstart",
   },
   {
+    title: "Supabase Integration",
+    href: "/guides/cloud-storage",
+  },
+  {
     title: "Commands",
     href: "/commands",
     items: [
@@ -25,12 +29,6 @@ export const navigation: NavItem[] = [
     ],
   },
   {
-    title: "Supabase Integration",
-    href: "/guides/cloud-storage",
-  },
-  { title: "YAML Schema", href: "/schema" },
-  { title: "SDK Reference", href: "/sdk" },
-  {
     title: "Guides",
     href: "/guides",
     items: [
@@ -44,6 +42,8 @@ export const navigation: NavItem[] = [
       { title: "Safe Tool Design in a Web App", href: "/guides/safe-tool-design" },
     ],
   },
+  { title: "YAML Schema", href: "/schema" },
+  { title: "SDK Reference", href: "/sdk" },
   {
     title: "Concepts",
     href: "/concepts",
