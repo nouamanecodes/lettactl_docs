@@ -75,23 +75,20 @@ lettactl export agent support-agent -f yaml --skip-first-message -o support-agen
         },
       },
       {
-        heading: "Export All Your Agents",
+        heading: "Bulk Export",
         content:
-          "There's no --all flag on export, but you can loop over your agents and export each one. Or export them individually and merge them into a single fleet YAML. For large fleets, the loop approach is fastest.",
+          "Use lettactl export agents to export multiple agents at once. You can export your entire fleet, match agents by glob pattern, or filter by tags. All variants output a single fleet YAML with every matched agent in the agents array.",
         code: {
           language: "bash",
-          title: "Export all agents",
-          code: `# Export each agent to its own file
-for agent in $(lettactl get agents -o json | jq -r '.[].name'); do
-  lettactl export agent "$agent" -f yaml -o "$agent.yml"
-  echo "Exported $agent"
-done
+          title: "Bulk export agents",
+          code: `# Export every agent to a single fleet YAML
+lettactl export agents --all -f yaml -o fleet.yaml
 
-# Or export all to a single directory
-mkdir -p exports/
-for agent in $(lettactl get agents -o json | jq -r '.[].name'); do
-  lettactl export agent "$agent" -f yaml -o "exports/$agent.yml"
-done`,
+# Export agents matching a glob pattern
+lettactl export agents --match "support-*" -f yaml -o support-fleet.yaml
+
+# Export agents by tags (AND logic — all tags must match)
+lettactl export agents --tags "tenant:acme,role:support" -f yaml -o acme-support.yaml`,
         },
       },
       {
