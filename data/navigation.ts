@@ -14,6 +14,21 @@ export const navigation: NavItem[] = [
     href: "/guides/cloud-storage",
   },
   {
+    title: "Guides",
+    href: "/guides",
+    items: [
+      { title: "Importing Existing Agents", href: "/guides/importing-existing-agents" },
+      { title: "Canary Deployments", href: "/guides/canary-deployments" },
+      { title: "Multi-Tenancy", href: "/guides/multi-tenancy" },
+      { title: "Self-Diagnosis", href: "/guides/self-diagnosis" },
+      { title: "Cloud Storage", href: "/guides/cloud-storage" },
+      { title: "Frontend Uploads", href: "/guides/frontend-uploads" },
+      { title: "Agent Calibration", href: "/guides/agent-calibration" },
+      { title: "Bulk Messaging", href: "/guides/bulk-messaging" },
+      { title: "Safe Tool Design in a Web App", href: "/guides/safe-tool-design" },
+    ],
+  },
+  {
     title: "Commands",
     href: "/commands",
     items: [
@@ -26,20 +41,6 @@ export const navigation: NavItem[] = [
       { title: "Fleet Reporting", href: "/commands/fleet" },
       { title: "Canary Deployments", href: "/commands/canary" },
       { title: "Utility", href: "/commands/utility" },
-    ],
-  },
-  {
-    title: "Guides",
-    href: "/guides",
-    items: [
-      { title: "Canary Deployments", href: "/guides/canary-deployments" },
-      { title: "Multi-Tenancy", href: "/guides/multi-tenancy" },
-      { title: "Self-Diagnosis", href: "/guides/self-diagnosis" },
-      { title: "Cloud Storage", href: "/guides/cloud-storage" },
-      { title: "Frontend Uploads", href: "/guides/frontend-uploads" },
-      { title: "Agent Calibration", href: "/guides/agent-calibration" },
-      { title: "Bulk Messaging", href: "/guides/bulk-messaging" },
-      { title: "Safe Tool Design in a Web App", href: "/guides/safe-tool-design" },
     ],
   },
   { title: "YAML Schema", href: "/schema" },
