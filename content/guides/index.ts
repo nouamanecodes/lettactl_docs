@@ -1127,6 +1127,34 @@ lettactl send --all "*" "System update: review your memory blocks and tools. Con
         },
       },
       {
+        heading: "Post-Deploy Recalibration with --recalibrate",
+        content:
+          "The apply command supports --recalibrate to automatically send a calibration message to agents that had changes applied. This is simpler than manually using lettactl send — the apply command already knows which agents changed, so it only recalibrates the ones that need it. Unchanged agents are skipped entirely.",
+        code: {
+          language: "bash",
+          title: "Recalibrate on apply",
+          code: `# Update config and recalibrate agents that changed
+lettactl apply -f fleet.yaml --recalibrate
+
+# Custom calibration message
+lettactl apply -f fleet.yaml --recalibrate --recalibrate-message "Your gather_competitive_data tool has been fixed."
+
+# Only recalibrate support agents that changed
+lettactl apply -f fleet.yaml --recalibrate --recalibrate-tags "role:support"
+
+# Only recalibrate agents matching a glob
+lettactl apply -f fleet.yaml --recalibrate --recalibrate-match "*-puma-*"
+
+# Fire-and-forget (don't wait for responses, useful in CI)
+lettactl apply -f fleet.yaml --recalibrate --no-wait`,
+        },
+      },
+      {
+        heading: "--recalibrate vs Manual Bulk Messaging",
+        content:
+          "Use --recalibrate on apply when deploying config changes and you want automatic post-deploy calibration — it targets only agents with diffs and requires no extra commands. Use lettactl send for ad-hoc recalibration independent of deployment, when you need per-agent custom messages, or when you want to recalibrate agents that weren't part of an apply run.",
+      },
+      {
         heading: "Recalibration via the SDK",
         content:
           "For programmatic retraining — like after updating shared memory blocks — use the SDK to send recalibration messages. Update the memory content first, apply the config, then send a bulk message telling agents to re-read their memory.",
