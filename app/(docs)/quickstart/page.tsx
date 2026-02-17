@@ -47,6 +47,32 @@ export LETTA_API_KEY=your-key-here`}
       />
 
       <h2 className={styles.sectionTitle}>
+        Conversation Search (Optional)
+      </h2>
+      <p className={styles.paragraph}>
+        Letta agents include a{" "}
+        <code className={styles.inlineCode}>conversation_search</code>{" "}
+        tool for searching past conversations. By default it uses basic
+        text matching. For semantic search (e.g. &quot;what did we discuss
+        about the campaign?&quot;), enable{" "}
+        <a href="https://turbopuffer.com" target="_blank" rel="noopener noreferrer">
+          Turbopuffer
+        </a>:
+      </p>
+      {/* @ts-expect-error Async Server Component */}
+      <CodeBlock
+        code={`# Add to your Letta server environment
+LETTA_USE_TPUF=true
+LETTA_TPUF_API_KEY=your_turbopuffer_api_key
+LETTA_EMBED_ALL_MESSAGES=true`}
+        title="Turbopuffer env vars"
+      />
+      <p className={styles.paragraph}>
+        Requires <code className={styles.inlineCode}>OPENAI_API_KEY</code>{" "}
+        for embeddings. Only messages sent after enabling are indexed.
+      </p>
+
+      <h2 className={styles.sectionTitle}>
         Your First Fleet Config
       </h2>
       <p className={styles.paragraph}>
