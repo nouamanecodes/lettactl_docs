@@ -41,7 +41,7 @@ lettactl export agent support-agent -f yaml --skip-first-message -o support-agen
       {
         heading: "What Gets Exported",
         content:
-          "The YAML export captures everything lettactl needs to recreate the agent: name, description, system_prompt, llm_config (model, context_window, reasoning), embedding config, tags, agent-owned memory blocks (with current values), custom tools (by name), folders (with filenames), archives, and first_message if one was configured. Conversation history is NOT included — YAML captures configuration only, not state.",
+          "The YAML export captures everything lettactl needs to recreate the agent: name, description, system_prompt, llm_config (model, context_window, max_tokens, reasoning), embedding config, tags, agent-owned memory blocks (with current values), custom tools (by name), folders (with filenames), archives, and first_message if one was configured. Conversation history is NOT included — YAML captures configuration only, not state.",
         code: {
           language: "yaml",
           title: "Example exported YAML",

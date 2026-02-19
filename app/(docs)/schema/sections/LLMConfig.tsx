@@ -36,13 +36,23 @@ export default function LLMConfig() {
               Context window size in tokens. Must be between 1,000 and 200,000.
             </td>
           </tr>
+          <tr>
+            <td>
+              <code className={styles.inlineCode}>max_tokens</code>
+            </td>
+            <td><span className={styles.type}>integer</span></td>
+            <td>
+              Maximum output tokens per LLM call. Optional — omit to use the server default (8192). Useful for models that support large outputs (e.g. Claude Haiku 4.5 supports 64k).
+            </td>
+          </tr>
         </tbody>
       </table>
 
       <CodeBlock
         code={`llm_config:
   model: "google_ai/gemini-2.5-pro"
-  context_window: 128000`}
+  context_window: 128000
+  max_tokens: 16384  # optional`}
         language="yaml"
         title="LLMConfig example"
       />

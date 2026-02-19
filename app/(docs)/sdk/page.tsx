@@ -274,6 +274,7 @@ interface AgentConfig {
 interface LLMConfig {
   model: string             // "provider/model-name"
   context_window: number    // 1000-200000
+  max_tokens?: number       // max output tokens per call (optional)
 }
 
 interface PromptConfig {
