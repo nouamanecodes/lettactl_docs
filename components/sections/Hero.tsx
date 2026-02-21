@@ -2,7 +2,7 @@ import Link from "next/link"
 import CopyButton from "@/components/elements/CopyButton"
 import styles from "./Hero.module.css"
 
-const INSTALL_CMD = "npx lettactl apply -f fleet.yaml"
+const INSTALL_CMD = "npm install -g lettactl"
 const PLAYBOOKS_CMD = "npx playbooks add skill letta-ai/skills --skill fleet-management"
 
 export default function Hero() {
