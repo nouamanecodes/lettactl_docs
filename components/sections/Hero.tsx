@@ -3,6 +3,7 @@ import CopyButton from "@/components/elements/CopyButton"
 import styles from "./Hero.module.css"
 
 const INSTALL_CMD = "npx lettactl apply -f fleet.yaml"
+const PLAYBOOKS_CMD = "npx playbooks add skill letta-ai/skills --skill fleet-management"
 
 export default function Hero() {
   return (
@@ -20,12 +21,21 @@ export default function Hero() {
         to deploy your entire fleet.
       </p>
 
-      <div className={styles.install}>
-        <span className={styles.installText}>
-          <span className={styles.prompt}>$</span>{" "}
-          {INSTALL_CMD}
-        </span>
-        <CopyButton text={INSTALL_CMD} />
+      <div className={styles.installGroup}>
+        <div className={styles.install}>
+          <span className={styles.installText}>
+            <span className={styles.prompt}>$</span>{" "}
+            {INSTALL_CMD}
+          </span>
+          <CopyButton text={INSTALL_CMD} />
+        </div>
+        <div className={styles.install}>
+          <span className={styles.installText}>
+            <span className={styles.prompt}>$</span>{" "}
+            {PLAYBOOKS_CMD}
+          </span>
+          <CopyButton text={PLAYBOOKS_CMD} />
+        </div>
       </div>
 
       <div className={styles.actions}>
@@ -37,14 +47,24 @@ export default function Hero() {
         </Link>
       </div>
 
-      <a
-        href="https://docs.letta.com/guides/community/lettactl/"
-        target="_blank"
-        rel="noopener noreferrer"
-        className={styles.communityLink}
-      >
-        Official community tool — featured in Letta docs →
-      </a>
+      <div className={styles.communityLinks}>
+        <a
+          href="https://docs.letta.com/guides/community/lettactl/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className={styles.communityLink}
+        >
+          Official community tool — featured in Letta docs →
+        </a>
+        <a
+          href="https://playbooks.com/skills/letta-ai/skills/fleet-management"
+          target="_blank"
+          rel="noopener noreferrer"
+          className={styles.communityLink}
+        >
+          Available on playbooks.com →
+        </a>
+      </div>
     </section>
   )
 }

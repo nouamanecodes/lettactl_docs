@@ -43,6 +43,14 @@
   margin-bottom: var(--ds-space-8);
 }
 
+.installGroup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--ds-space-3);
+  margin-bottom: var(--ds-space-6);
+}
+
 .install {
   display: inline-flex;
   align-items: center;
@@ -51,7 +59,6 @@
   padding: var(--ds-space-3) var(--ds-space-5);
   border-radius: var(--ds-radius-lg);
   border: 1px solid var(--ds-color-code-border);
-  margin-bottom: var(--ds-space-6);
 }
 
 .installText {
@@ -73,8 +80,15 @@
   justify-content: center;
 }
 
-.communityLink {
+.communityLinks {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--ds-space-2);
   margin-top: var(--ds-space-4);
+}
+
+.communityLink {
   font-size: var(--ds-text-sm);
   color: var(--ds-color-text-secondary);
   text-decoration: none;
