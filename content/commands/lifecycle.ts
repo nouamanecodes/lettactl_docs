@@ -6,6 +6,21 @@ export const groupDescription =
 
 export const commands: CommandDoc[] = [
   {
+    name: "create conversation",
+    description: "Create a new conversation for an agent. Conversations provide isolated message histories while sharing the agent's archival memory, blocks, and tools. For declarative workflows, you can also declare conversations in your fleet YAML — they are created automatically on `lettactl apply` and matched by summary on re-apply.",
+    usage: "lettactl create conversation <agent>",
+    flags: [],
+    examples: [
+      { title: "Create conversation", code: "lettactl create conversation my-agent" },
+      { title: "Declarative (YAML)", code: "# In fleet.yaml:\n# conversations:\n#   - summary: \"Ticket #101\"\n#   - summary: \"Ticket #102\"\nlettactl apply -f fleet.yaml" },
+    ],
+    notes: [
+      "Conversations can also be declared in YAML under agents[].conversations with a required `summary` field.",
+      "YAML conversations are idempotent — re-applying won't create duplicates (matched by summary).",
+      "Use `isolated_blocks` to create per-conversation copies of named memory blocks.",
+    ],
+  },
+  {
     name: "create agent",
     description: "Create a new agent directly from CLI flags without a YAML file.",
     usage: "lettactl create agent <name> [options]",
@@ -54,6 +69,7 @@ export const commands: CommandDoc[] = [
       { title: "Delete agent", code: "lettactl delete agent my-agent" },
       { title: "Force delete", code: "lettactl delete agent my-agent --force" },
     ],
+    notes: ["Deleting an agent cascades to all its conversations."],
   },
   {
     name: "delete-all",

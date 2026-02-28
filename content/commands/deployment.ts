@@ -38,6 +38,9 @@ export const commands: CommandDoc[] = [
       { title: "Recalibrate with custom message", code: "lettactl apply -f fleet.yaml --recalibrate --recalibrate-message 'Your tools have been updated.'" },
       { title: "Recalibrate specific agents", code: "lettactl apply -f fleet.yaml --recalibrate --recalibrate-tags 'role:support'" },
     ],
+    notes: [
+      "Supports declarative conversations — declare `conversations` in agent YAML with a `summary` field. They are created on apply and matched by summary on re-apply (idempotent).",
+    ],
     seeAlso: ["validate", "get agents"],
   },
   {

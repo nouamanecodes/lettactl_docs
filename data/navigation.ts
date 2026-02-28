@@ -24,6 +24,7 @@ export const navigation: NavItem[] = [
       { title: "Cloud Storage", href: "/guides/cloud-storage" },
       { title: "Frontend Uploads", href: "/guides/frontend-uploads" },
       { title: "Agent Calibration", href: "/guides/agent-calibration" },
+      { title: "Conversations", href: "/guides/conversations" },
       { title: "Bulk Messaging", href: "/guides/bulk-messaging" },
       { title: "Safe Tool Design in a Web App", href: "/guides/safe-tool-design" },
       { title: "LettaBot Integration", href: "/guides/lettabot-integration" },
