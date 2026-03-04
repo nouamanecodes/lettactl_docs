@@ -20,6 +20,7 @@ import { guide as bulkMessaging } from "./bulk-messaging"
 import { guide as safeToolDesign } from "./safe-tool-design"
 import { guide as lettabotIntegration } from "./lettabot-integration"
 import { guide as conversations } from "./conversations"
+import { guide as runTracking } from "./run-tracking"
 
 export const guides: Record<string, GuidePage> = {
   "importing-existing-agents": importingExistingAgents,
@@ -33,6 +34,7 @@ export const guides: Record<string, GuidePage> = {
   "safe-tool-design": safeToolDesign,
   "lettabot-integration": lettabotIntegration,
   conversations,
+  "run-tracking": runTracking,
 }
 
 export const guideSlugs = Object.keys(guides)

@@ -13,10 +13,12 @@ export const commands: CommandDoc[] = [
       { flag: "--active", description: "Show only active/running jobs", type: "boolean" },
       { flag: "--agent", short: "-a", description: "Filter by agent name", type: "string" },
       { flag: "--limit", short: "-l", description: "Limit number of results", type: "number" },
+      { flag: "--watch", short: "-w", description: "Continuously poll and refresh the run list (Ctrl+C to stop)", type: "boolean" },
     ],
     examples: [
       { title: "Active runs", code: "lettactl runs --active" },
       { title: "Agent runs", code: "lettactl runs -a my-agent" },
+      { title: "Watch mode", code: "lettactl get runs --watch --active" },
     ],
   },
   {
@@ -31,6 +33,18 @@ export const commands: CommandDoc[] = [
     examples: [
       { title: "Check run", code: "lettactl run abc-123" },
       { title: "Wait for completion", code: "lettactl run abc-123 --wait --messages" },
+    ],
+  },
+  {
+    name: "track",
+    description: "Track async runs until completion. Auto-exits when all runs reach a terminal state. Exit code 1 if any run failed (CI/CD friendly).",
+    usage: "lettactl track [run-ids...] [options]",
+    flags: [
+      { flag: "--agent", short: "-a", description: "Track all active runs for an agent", type: "string" },
+    ],
+    examples: [
+      { title: "Track specific runs", code: "lettactl track <run-id-1> <run-id-2>" },
+      { title: "Track by agent", code: "lettactl track --agent my-agent" },
     ],
   },
   {

@@ -28,6 +28,7 @@ export const navigation: NavItem[] = [
       { title: "Bulk Messaging", href: "/guides/bulk-messaging" },
       { title: "Safe Tool Design in a Web App", href: "/guides/safe-tool-design" },
       { title: "LettaBot Integration", href: "/guides/lettabot-integration" },
+      { title: "Run Tracking", href: "/guides/run-tracking" },
     ],
   },
   {
