@@ -43,6 +43,7 @@ export const navigation: NavItem[] = [
       { title: "Async Runs", href: "/commands/runs" },
       { title: "Fleet Reporting", href: "/commands/fleet" },
       { title: "Canary Deployments", href: "/commands/canary" },
+      { title: "Remote Environments", href: "/commands/remote" },
       { title: "Utility", href: "/commands/utility" },
     ],
   },

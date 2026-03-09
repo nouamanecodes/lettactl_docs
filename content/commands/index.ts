@@ -6,6 +6,7 @@ import * as messaging from "./messaging"
 import * as runs from "./runs"
 import * as fleet from "./fleet"
 import * as canary from "./canary"
+import * as remote from "./remote"
 import * as utility from "./utility"
 
 export const commandGroups: Record<
@@ -20,6 +21,7 @@ export const commandGroups: Record<
   runs,
   fleet,
   canary,
+  remote,
   utility,
 }
 
