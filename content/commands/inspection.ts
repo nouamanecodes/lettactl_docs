@@ -7,7 +7,7 @@ export const groupDescription =
 export const commands: CommandDoc[] = [
   {
     name: "get",
-    description: "List resources on the Letta server. Supports agents, blocks, archives, tools, folders, files, mcp-servers, conversations, and archival memory.",
+    description: "List resources on the Letta server. Supports agents, blocks, archives, tools, folders, files, mcp-servers, conversations, archival memory, and all (server overview).",
     usage: "lettactl get <resource> [options]",
     flags: [
       { flag: "--output", short: "-o", description: "Output format", type: "table | json | yaml | wide" },
@@ -26,11 +26,12 @@ export const commands: CommandDoc[] = [
       { title: "Filter by tag", code: "lettactl get agents --tags 'tenant:acme'" },
       { title: "Search archival", code: "lettactl get archival -a my-agent --query 'pricing'" },
       { title: "List conversations", code: "lettactl get conversations my-agent" },
+      { title: "Server overview", code: "lettactl get all" },
     ],
   },
   {
     name: "describe",
-    description: "Show detailed information about a specific resource including full config, attached resources, and source code.",
+    description: "Show detailed information about a specific resource including full config, attached resources, MCP servers, and source code.",
     usage: "lettactl describe <resource> <name> [options]",
     flags: [
       { flag: "--canary", description: "Describe the canary version", type: "boolean" },
