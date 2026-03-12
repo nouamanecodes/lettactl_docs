@@ -8,17 +8,18 @@ export const commands: CommandDoc[] = [
   {
     name: "runs",
     description: "List async job runs across agents.",
-    usage: "lettactl runs [options]",
+    usage: "lettactl get runs [agent] [options]",
     flags: [
       { flag: "--active", description: "Show only active/running jobs", type: "boolean" },
-      { flag: "--agent", short: "-a", description: "Filter by agent name", type: "string" },
+      { flag: "--agent", short: "-a", description: "Filter by agent name (alias for positional)", type: "string" },
       { flag: "--limit", short: "-l", description: "Limit number of results", type: "number" },
       { flag: "--watch", short: "-w", description: "Continuously poll and refresh the run list (Ctrl+C to stop)", type: "boolean" },
     ],
     examples: [
-      { title: "Active runs", code: "lettactl runs --active" },
-      { title: "Agent runs", code: "lettactl runs -a my-agent" },
-      { title: "Watch mode", code: "lettactl get runs --watch --active" },
+      { title: "All runs", code: "lettactl get runs" },
+      { title: "Agent runs", code: "lettactl get runs my-agent" },
+      { title: "Active runs", code: "lettactl get runs --active" },
+      { title: "Watch mode", code: "lettactl get runs my-agent --watch" },
     ],
   },
   {
@@ -54,6 +55,26 @@ export const commands: CommandDoc[] = [
     flags: [],
     examples: [
       { title: "Cancel run", code: "lettactl run-delete abc-123" },
+    ],
+  },
+  {
+    name: "SDK: Run Management",
+    description: "The LettaCtl SDK exposes run management methods for programmatic use: sendMessage, getRun, waitForRun, listRuns, and deleteRun.",
+    usage: "import { LettaCtl } from 'lettactl'",
+    flags: [],
+    examples: [
+      { title: "Send message and wait", code: `const ctl = new LettaCtl({ lettaBaseUrl: 'http://localhost:8283' });
+const run = await ctl.sendMessage(agentId, 'Hello');
+const completed = await ctl.waitForRun(run.id, { timeout: 60 });` },
+      { title: "List runs for an agent", code: `const runs = await ctl.listRuns(agentId);
+const activeRuns = await ctl.listRuns(agentId, { active: true });
+const limited = await ctl.listRuns(agentId, { limit: 5 });` },
+      { title: "Cancel a run", code: `await ctl.deleteRun(runId);` },
+      { title: "Check run status", code: `import { isRunTerminal, getEffectiveRunStatus } from 'lettactl';
+const run = await ctl.getRun(runId);
+if (isRunTerminal(run)) {
+  console.log('Done:', getEffectiveRunStatus(run));
+}` },
     ],
   },
 ]
