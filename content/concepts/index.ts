@@ -33,6 +33,7 @@ export const concepts: Record<string, ConceptPage> = {
     description: "Company voice and style"
     limit: 5000
     from_file: "memory/guidelines.md"
+    agent_owned: false  # YAML syncs on every apply
 
 agents:
   - name: support-agent
