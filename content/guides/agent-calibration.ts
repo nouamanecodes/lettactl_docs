@@ -149,6 +149,26 @@ lettactl apply -f fleet.yaml --recalibrate --no-wait`,
       },
     },
     {
+      heading: "Clearing Stale Context with --compact",
+      content:
+        "When you update a block's content, the new content is written to the server — but the agent's conversation history may still reference the old content. The agent reads its own previous messages and confabulates from stale context. Use --compact to trigger Letta's compaction endpoint after applying changes. Compaction summarizes older messages and forces a full context rebuild, clearing the poisoned history. Older messages are preserved in recall storage (searchable via conversation_search). Run --compact before --recalibrate for best results.",
+      code: {
+        language: "bash",
+        title: "Compact after block updates",
+        code: `# Compact all agents that had changes
+lettactl apply -f fleet.yaml --compact
+
+# Compact then recalibrate (compact runs first)
+lettactl apply -f fleet.yaml --compact --recalibrate
+
+# Compact only specific agents by tag
+lettactl apply -f fleet.yaml --compact --compact-tags "role:draper"
+
+# Compact by glob pattern
+lettactl apply -f fleet.yaml --compact --compact-match "*-draper"`,
+      },
+    },
+    {
       heading: "--recalibrate vs Manual Bulk Messaging",
       content:
         "Use --recalibrate on apply when deploying config changes and you want automatic post-deploy calibration — it targets only agents with diffs and requires no extra commands. Use lettactl send for ad-hoc recalibration independent of deployment, when you need per-agent custom messages, or when you want to recalibrate agents that weren't part of an apply run.",
