@@ -87,6 +87,46 @@
   gap: var(--ds-space-3);
 }
 
+.searchButton {
+  display: none;
+  align-items: center;
+  gap: var(--ds-space-2);
+  font-family: var(--ds-font-family);
+  font-size: var(--ds-text-xs);
+  color: var(--ds-color-text-tertiary);
+  background: none;
+  border: 1px solid var(--ds-color-border);
+  border-radius: var(--ds-radius-base);
+  padding: var(--ds-space-1) var(--ds-space-3);
+  cursor: pointer;
+  transition: all var(--ds-transition-fast);
+}
+
+.searchButton:hover {
+  border-color: var(--ds-color-accent);
+  color: var(--ds-color-accent);
+}
+
+@media (min-width: 768px) {
+  .searchButton {
+    display: flex;
+  }
+}
+
+.searchLabel {
+  color: var(--ds-color-text-tertiary);
+}
+
+.searchKbd {
+  font-family: var(--ds-font-mono);
+  font-size: 10px;
+  color: var(--ds-color-text-tertiary);
+  background: var(--ds-color-surface);
+  border: 1px solid var(--ds-color-border);
+  border-radius: 3px;
+  padding: 1px 4px;
+}
+
 .headerBadge {
   display: none;
   align-items: center;

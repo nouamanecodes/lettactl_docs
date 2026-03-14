@@ -4,9 +4,10 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import Image from "next/image"
-import { Menu, X, Github, Star, Moon, Sun } from "lucide-react"
+import { Menu, X, Github, Star, Moon, Sun, Search } from "lucide-react"
 import { useDarkMode } from "@/lib/dark-mode"
 import { formatCount } from "@/lib/format"
+import SearchModal from "@/components/elements/SearchModal"
 import styles from "./Header.module.css"
 
 const navLinks = [
@@ -22,6 +23,7 @@ export default function Header() {
   const pathname = usePathname()
   const { isDark, toggle: toggleDarkMode } = useDarkMode()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [starCount, setStarCount] = useState<number | null>(null)
   const [isHidden, setIsHidden] = useState(false)
 
@@ -44,6 +46,17 @@ export default function Header() {
       document.body.style.overflow = "unset"
     }
   }, [isMobileMenuOpen])
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        e.preventDefault()
+        setIsSearchOpen(true)
+      }
+    }
+    window.addEventListener("keydown", handleKeyDown)
+    return () => window.removeEventListener("keydown", handleKeyDown)
+  }, [])
 
   useEffect(() => {
     let lastScrollY = window.scrollY
@@ -84,6 +97,16 @@ export default function Header() {
           </nav>
 
           <div className={styles.actions}>
+            <button
+              className={styles.searchButton}
+              onClick={() => setIsSearchOpen(true)}
+              aria-label="Search docs"
+            >
+              <Search size={14} />
+              <span className={styles.searchLabel}>Search</span>
+              <kbd className={styles.searchKbd}>⌘K</kbd>
+            </button>
+
             <a
               href="https://github.com/nouamanecodes/lettactl"
               target="_blank"
@@ -150,6 +173,8 @@ export default function Header() {
           </div>
         )}
       </div>
+
+      <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
     </header>
   )
 }
