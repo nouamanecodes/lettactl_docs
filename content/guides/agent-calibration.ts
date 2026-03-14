@@ -149,6 +149,25 @@ lettactl apply -f fleet.yaml --recalibrate --no-wait`,
       },
     },
     {
+      heading: "Fresh Context After Block Rewrites",
+      content:
+        "When you significantly rewrite a block's content, --compact may not be enough — the compaction summary itself can carry forward descriptions of the old content. Use --fresh-context to reset the agent's message buffer entirely. The agent starts with a clean slate and reads blocks as they actually are. Conversation history is preserved in recall storage (searchable via conversation_search) — only the active context window is cleared. Use --fresh-context before --recalibrate for the strongest fix.",
+      code: {
+        language: "bash",
+        title: "Fresh context after block rewrites",
+        code: `# Reset context for agents that had changes
+lettactl apply -f fleet.yaml --fresh-context
+
+# Fresh context then recalibrate into clean context
+lettactl apply -f fleet.yaml --fresh-context --recalibrate \\
+  --recalibrate-message "Your archival_policies block was rewritten. Read it and tell me what changed."
+
+# Filter by tag or glob
+lettactl apply -f fleet.yaml --fresh-context --fresh-context-tags "role:draper"
+lettactl apply -f fleet.yaml --fresh-context --fresh-context-match "*draper*"`,
+      },
+    },
+    {
       heading: "Clearing Stale Context with --compact",
       content:
         "When you update a block's content, the new content is written to the server — but the agent's conversation history may still reference the old content. The agent reads its own previous messages and confabulates from stale context. Use --compact to trigger Letta's compaction endpoint after applying changes. Compaction summarizes older messages and forces a full context rebuild, clearing the poisoned history. Older messages are preserved in recall storage (searchable via conversation_search). Run --compact before --recalibrate for best results.",
