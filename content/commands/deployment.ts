@@ -22,6 +22,7 @@ export const commands: CommandDoc[] = [
       { flag: "--canary-prefix", description: "Custom prefix for canary agents", type: "string", default: "CANARY-" },
       { flag: "--promote", description: "Promote canary config to production agents", type: "boolean" },
       { flag: "--cleanup", description: "Remove canary agents after promotion", type: "boolean" },
+      { flag: "--skip-recompile", description: "Skip automatic conversation recompilation after block changes", type: "boolean" },
       { flag: "--fresh-context", description: "Reset message buffer for agents that had changes (agent reads blocks fresh)", type: "boolean" },
       { flag: "--fresh-context-tags", description: "Only reset context for agents matching these tags (comma-separated, AND logic)", type: "string" },
       { flag: "--fresh-context-match", description: "Only reset context for agents matching glob pattern", type: "string" },
@@ -40,6 +41,7 @@ export const commands: CommandDoc[] = [
       { title: "Deploy single agent", code: "lettactl apply -f fleet.yaml --agent my-agent" },
       { title: "Template application", code: "lettactl apply -f template.yaml --match 'support-*'" },
       { title: "Canary deploy + promote", code: "lettactl apply -f fleet.yaml --canary\nlettactl apply -f fleet.yaml --canary --promote --cleanup" },
+      { title: "Skip auto-recompile", code: "lettactl apply -f fleet.yaml --skip-recompile" },
       { title: "Fresh context after block rewrite", code: "lettactl apply -f fleet.yaml --fresh-context" },
       { title: "Fresh context + recalibrate", code: "lettactl apply -f fleet.yaml --fresh-context --recalibrate" },
       { title: "Compact after block updates", code: "lettactl apply -f fleet.yaml --compact" },
@@ -49,6 +51,7 @@ export const commands: CommandDoc[] = [
       { title: "Recalibrate specific agents", code: "lettactl apply -f fleet.yaml --recalibrate --recalibrate-tags 'role:support'" },
     ],
     notes: [
+      "Block changes automatically recompile all conversations for affected agents (Letta 0.16.7+). Use --skip-recompile to opt out.",
       "Supports declarative conversations — declare `conversations` in agent YAML with a `summary` field. They are created on apply and matched by summary on re-apply (idempotent).",
     ],
     seeAlso: ["validate", "get agents"],

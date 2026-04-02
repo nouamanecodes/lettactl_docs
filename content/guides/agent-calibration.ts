@@ -149,6 +149,26 @@ lettactl apply -f fleet.yaml --recalibrate --no-wait`,
       },
     },
     {
+      heading: "Automatic Recompilation on Block Drift",
+      content:
+        "When lettactl apply detects block changes (value, limit, or description drift on shared blocks with agent_owned: false), it automatically recompiles all conversations for affected agents. This updates the system message with current block values while preserving message history. No flag needed — it just works. Use --skip-recompile to opt out for bulk deploys or testing.",
+      code: {
+        language: "bash",
+        title: "Auto-recompile behavior",
+        code: `# Block changes auto-recompile — no flag needed
+lettactl apply -f fleet.yaml
+
+# Skip auto-recompile for bulk deploys
+lettactl apply -f fleet.yaml --skip-recompile
+
+# Manual recompile for a specific conversation
+lettactl recompile my-agent --conversation-id <conv-id>
+
+# Manual recompile all conversations
+lettactl recompile my-agent --all`,
+      },
+    },
+    {
       heading: "Fresh Context After Block Rewrites",
       content:
         "When you significantly rewrite a block's content, --compact may not be enough — the compaction summary itself can carry forward descriptions of the old content. Use --fresh-context to reset the agent's message buffer entirely. The agent starts with a clean slate and reads blocks as they actually are. Conversation history is preserved in recall storage (searchable via conversation_search) — only the active context window is cleared. Use --fresh-context before --recalibrate for the strongest fix.",
