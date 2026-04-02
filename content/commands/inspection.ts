@@ -31,7 +31,7 @@ export const commands: CommandDoc[] = [
   },
   {
     name: "describe",
-    description: "Show detailed information about a specific resource including full config, attached resources, MCP servers, and source code.",
+    description: "Show detailed information about a specific resource including full config, attached resources, conversations, MCP servers, and source code.",
     usage: "lettactl describe <resource> <name> [options]",
     flags: [
       { flag: "--canary", description: "Describe the canary version", type: "boolean" },

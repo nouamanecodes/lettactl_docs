@@ -13,7 +13,7 @@ export const commands: CommandDoc[] = [
       { flag: "--stream", description: "Stream the response in real-time", type: "boolean" },
       { flag: "--sync", description: "Synchronous mode (may timeout on long responses)", type: "boolean" },
       { flag: "--no-wait", description: "Fire-and-forget — returns a run ID immediately", type: "boolean" },
-      { flag: "--conversation-id", description: "Send message within a specific conversation (forces streaming)", type: "string" },
+      { flag: "--conversation-id", description: "Send message within a specific conversation", type: "string" },
       { flag: "--all", description: "Send to all agents matching a glob pattern", type: "string" },
       { flag: "--file", short: "-f", description: "Target agents from a fleet config file", type: "string" },
       { flag: "--confirm", description: "Skip confirmation for bulk operations", type: "boolean" },
@@ -51,14 +51,16 @@ export const commands: CommandDoc[] = [
   },
   {
     name: "reset-messages",
-    description: "Clear an agent's conversation history.",
+    description: "Clear an agent's conversation history. Supports per-conversation reset.",
     usage: "lettactl reset-messages <agent> [options]",
     flags: [
       { flag: "--add-default", description: "Add default initial messages after reset", type: "boolean" },
+      { flag: "--conversation-id", description: "Reset a specific conversation instead of all", type: "string" },
     ],
     examples: [
-      { title: "Reset", code: "lettactl reset-messages my-agent" },
+      { title: "Reset all", code: "lettactl reset-messages my-agent" },
       { title: "Reset with defaults", code: "lettactl reset-messages my-agent --add-default" },
+      { title: "Reset specific conversation", code: "lettactl reset-messages my-agent --conversation-id <conv-id>" },
     ],
   },
   {
