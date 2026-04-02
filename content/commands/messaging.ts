@@ -77,6 +77,22 @@ export const commands: CommandDoc[] = [
     ],
   },
   {
+    name: "recompile",
+    description: "Recompile conversation(s) with current block values. Propagates block changes without losing message history.",
+    usage: "lettactl recompile <agent> [options]",
+    flags: [
+      { flag: "--conversation-id", description: "Recompile a specific conversation", type: "string" },
+      { flag: "--all", description: "Recompile all conversations for the agent", type: "boolean" },
+    ],
+    examples: [
+      { title: "Recompile one conversation", code: "lettactl recompile my-agent --conversation-id <conv-id>" },
+      { title: "Recompile all", code: "lettactl recompile my-agent --all" },
+    ],
+    notes: [
+      "Preferred over --fresh-context for block propagation. Preserves message history while updating the system message with current block values.",
+    ],
+  },
+  {
     name: "cancel-messages",
     description: "Cancel running message processing for an agent.",
     usage: "lettactl cancel-messages <agent> [options]",
